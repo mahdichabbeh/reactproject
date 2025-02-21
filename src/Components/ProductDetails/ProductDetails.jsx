@@ -12,8 +12,7 @@ import { addRecentlyViewed } from "../../utils/cookies";
 export default function ProductDetails() {
   const { productId } = useParams();
   const dispatch = useDispatch();
-  const { items: categories} = useSelector((state) => state.products);
-
+  const { items: products, categories, loading } = useSelector((state) => state.products);
   // ✅ Fetch products & categories once if not already loaded
   useEffect(() => {
     if (categories.length === 0) {
@@ -21,19 +20,21 @@ export default function ProductDetails() {
     }
   }, [dispatch, categories.length]);
 
-  // ✅ Extract Product Details from nested structure
+  // ✅ Extract Product Details from nested structure 
   const product = useMemo(() => {
-
-    for (const category of categories) {
+    for (const category of products) {
       const foundProduct = category.items.find((p) => String(p.id) === String(productId));
       if (foundProduct) {
-        return { ...foundProduct, categoryId: category.id, categoryName: category.name };
+        return { ...foundProduct, categoryName: category.name };
       }
-    }
 
+    }
+    
     return null;
   }, [productId, categories]);
 
+  const currentCat = categories.find((cat) => cat.name === product.categoryName);
+  product.categoryId = currentCat.id
   // ✅ Add to Recently Viewed when product is available
   useEffect(() => {
     if (product) {
