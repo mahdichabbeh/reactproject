@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 
 const Navbar = () => {
   const [categories, setCategories] = useState([]);
@@ -17,11 +17,11 @@ const Navbar = () => {
                 <div className="navbar">
                     <ul className="nav navbar-nav navbar-expand">
                         <li>
-                        <Link to="/">Home</Link> 
+                        <NavLink to="/">Home</NavLink> 
                         </li>
                         {categories.map((category) => (
                         <li key={category.id}>
-                            <Link to={`/shop/${category.id}`}>{category.name}</Link>
+                            <NavLink to={`/products-lists/${category.id}`}>{category.name}</NavLink>
                         </li>
                         ))}
                     </ul>
