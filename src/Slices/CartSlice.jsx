@@ -1,7 +1,6 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import Cookies from "js-cookie";
 
-// Fetch or create cart
 export const initializeCart = createAsyncThunk(
   "cart/initializeCart",
   async () => {
@@ -21,7 +20,7 @@ export const initializeCart = createAsyncThunk(
   }
 );
 
-// Add to cart
+
 export const addToCart = createAsyncThunk(
   "cart/addToCart",
   async ({ product, quantity, cartId }, { getState, dispatch }) => {
@@ -31,23 +30,18 @@ export const addToCart = createAsyncThunk(
     const updatedItems = existingItem
       ? state.items.map((item) =>
           item.id === product.id
-            ? { ...item, qty: item.qty + quantity } // **Corrected to use sent quantity**
+            ? { ...item, qty: item.qty + quantity } 
             : item
         )
-      : [...state.items, { ...product, qty: quantity }]; // **Use quantity from payload**
-    const subTotal = updatedItems.reduce(
-      (sum, item) => sum + item.price * item.qty,
-      0
-    );
-    const tax = subTotal * 0.2; // 20% Tax
-    const total = subTotal + tax;
+      : [...state.items, { ...product, qty: quantity }]; 
+    const { subTotal, tax, total } = calculateCartTotals(updatedItems);
     const response = await fetch(`http://localhost:3000/carts/${cartId}`, {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
         items: updatedItems,
-        subTotal, // ✅ Send subtotal
-        tax, // ✅ Send tax
+        subTotal, 
+        tax, 
         total,
       }),
     });
@@ -74,7 +68,7 @@ export const updateCartItemQuantity = createAsyncThunk(
     dispatch(updateCart(updatedCart));
   }
 );
-// Remove from cart
+
 export const removeFromCart = createAsyncThunk(
   "cart/removeFromCart",
   async ({ productId, cartId }, { getState, dispatch }) => {
@@ -93,20 +87,20 @@ export const removeFromCart = createAsyncThunk(
   }
 );
 
-// Checkout action
+
 export const checkoutCart = createAsyncThunk(
   "cart/checkoutCart",
-  async (cartId, { dispatch }) => {
-    // Clear cart and remove cookie
+  async (_, { dispatch }) => {
+    
     Cookies.remove("cartId");
     dispatch(resetCart());
   }
 );
 
-// Calculate Subtotal, Tax (20%), and Total
+
 const calculateCartTotals = (items) => {
   const subTotal = items.reduce((sum, item) => sum + item.price * item.qty, 0);
-  const tax = subTotal * 0.2; // 20% tax
+  const tax = subTotal * 0.2; 
   const total = subTotal + tax;
   return { subTotal, tax, total };
 };

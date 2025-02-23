@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { initializeCart, checkoutCart } from "../../Slices/CartSlice";
+import { initializeCart } from "../../Slices/CartSlice";
 import CartItem from "./CartItem";
 import CartTotal from "./CartTotal";
 import CrossSellProducts from "./CrossSellProducts"

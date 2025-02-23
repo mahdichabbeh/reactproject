@@ -6,13 +6,13 @@ import { Link } from "react-router-dom";
 export default function CartItem({ item }) {
   const dispatch = useDispatch();
   const { cartId } = useSelector((state) => state.cart);
-  const [quantity, setQuantity] = useState(item.qty); // Local state for quantity
+  const [quantity, setQuantity] = useState(item.qty); 
   const handleRemove = () => {
     dispatch(removeFromCart({ productId: item.id, cartId }));
   };
 
   const handleQuantityChange = (newQty) => {
-    if (newQty < 1) return; // Prevent negative or zero quantity
+    if (newQty < 1) return;
 
     setQuantity(newQty);
     

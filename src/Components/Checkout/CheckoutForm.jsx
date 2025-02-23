@@ -10,7 +10,7 @@ import ShippingDetails from "./ShippingDetails";
 import OrderSummary from "./OrderSummary";
 import PaymentMethod from "./PaymentMethod";
 
-// Validation Schema
+
 const schema = yup.object().shape({
   customer: yup.object().shape({
     email: yup.string().email("Invalid email").required("Email is required"),
@@ -74,8 +74,8 @@ export default function CheckoutForm() {
       tax,
       items,
       customer: {
-        email: data.email, // ✅ Fix: Corrected path
-        phone: data.phone, // ✅ Fix: Corrected path
+        email: data.email,
+        phone: data.phone, 
         billingAddress: {
           civility: data.billingAddress?.civility,
           firstName: data.billingAddress?.firstName,
@@ -97,12 +97,11 @@ export default function CheckoutForm() {
               county: data.shippingAddress?.county,
               city: data.shippingAddress?.city,
             }
-          : null, // ✅ Fix: If shipping same as billing, send `null`
+          : null, 
       },
       paymentMethod: data.paymentMethod,
     };
 
-    console.log("Order data to be sent:", orderData); // ✅ Debug request payload
 
     try {
       const response = await fetch("http://localhost:3000/orders", {
@@ -139,11 +138,11 @@ export default function CheckoutForm() {
                   <form
                     onSubmit={methods.handleSubmit(
                       (data) => {
-                        console.log("Submitting order with data:", data); // ✅ Debugging
+                        
                         onSubmit(data);
                       },
                       (errors) => {
-                        console.error("Form validation errors:", errors); // ❌ Logs validation issues
+                        console.error("Form validation errors:", errors); 
                       }
                     )}
                     className="checkout"

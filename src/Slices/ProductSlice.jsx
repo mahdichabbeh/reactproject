@@ -1,6 +1,5 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 
-// Async Thunk to fetch products & categories together
 export const fetchProductsAndCategories = createAsyncThunk(
   "products/fetchProductsAndCategories",
   async () => {
@@ -13,8 +12,6 @@ export const fetchProductsAndCategories = createAsyncThunk(
       productsRes.json(),
       categoriesRes.json(),
     ]);
-    console.log("📢 Products fetched:", products);
-      console.log("📢 Categories fetched:", categories);
     return { products, categories };
   }
 );
@@ -23,7 +20,7 @@ const productsSlice = createSlice({
   name: "products",
   initialState: {
     items: [],
-    categories: [], // ✅ Added categories to state
+    categories: [], 
     loading: false,
   },
   reducers: {},
@@ -34,7 +31,7 @@ const productsSlice = createSlice({
       })
       .addCase(fetchProductsAndCategories.fulfilled, (state, action) => {
         state.items = action.payload.products;
-        state.categories = action.payload.categories; // ✅ Store categories in Redux
+        state.categories = action.payload.categories; 
         state.loading = false;
       })
       .addCase(fetchProductsAndCategories.rejected, (state) => {
